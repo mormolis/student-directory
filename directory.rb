@@ -29,6 +29,7 @@ end
 def print_menu
     puts "1. Input the students"
     puts "2. Show the students"
+    puts "3. Save students to students.csv"
     puts "9. Exit" 
 end
 def show_students
@@ -46,6 +47,8 @@ def process(selection)
         input_students
     when "2"
         show_students
+    when "3"
+        save_students
     when "9"
         exit 
     else
@@ -60,6 +63,13 @@ def interactive_menu
         process(selection)
     end
 end
+
+def save_students
+    file = File.open("students.csv", "w")
+    @students.each { |student| file.puts "#{student[:name]},#{student[:cohort]}"}    
+    file.close
+end
+
 
 interactive_menu
   
