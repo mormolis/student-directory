@@ -1,6 +1,7 @@
 @students = [] # an empty array accessible to all methods
 
 def print_menu
+    puts "User's Menu\n-----------"
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
@@ -11,6 +12,7 @@ end
 def get_menu_selection
   loop do
     print_menu
+    print "Please type a number corresponding to the menu: "
     process(STDIN.gets.chomp)
   end
 end
@@ -22,13 +24,14 @@ def process(selection)
   when "2"
     show_students
   when "9"
+    puts "Bye!"
     exit # this will cause the program to terminate
   when "3"
     save_students_to_file
   when "4"
     load_students
   else
-    puts "I don't know what you meant, try again"
+    puts "\nI don't know what you meant, try again\n"
   end
 end
 
@@ -37,7 +40,7 @@ def parse_students_details(name, cohort)
 end
 
 def input_students
-  puts "Please enter the names of the students"
+  puts "\n\nPlease enter the names of the students"
   puts "To finish, just hit return twice"
   # get the first name
   name = STDIN.gets.chomp
@@ -46,10 +49,12 @@ def input_students
     # add the student hash to the array
     
     parse_students_details(name, "november")
-    puts "Now we have #{@students.count} students"
+    puts "Now we have #{@students.count} students including #{name}\n\n"
     # get another name from the user
+    puts "Please enter another name or hit enter again to return to the menu"
     name = STDIN.gets.chomp
   end
+  puts "Students's list was populated.\nPlease be aware that the file was not updated!\n\n"
 end
 
 
@@ -61,32 +66,30 @@ def show_students
 end
 
 def print_header
-  puts "The students of Villains Academy"
+  puts "\n\nThe students of Villains Academy"
   puts "-------------"
 end
 
 def print_student_list
+    
   @students.each do |student|
     puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
+  
 end
 
 def print_footer
   puts "Overall, we have #{@students.count} great students"
+  puts "\n\n"
 end
 
 def save_students_to_file   # made it more descriptive 
   # open the file for writing
   file = File.open("students.csv", "w")
-  # iterate over the array of students
-#   @students.each do |student|              
-#     student_data = [student[:name], student[:cohort]]
-#     csv_line = student_data.join(",")
-#     file.puts csv_line
-##### As I did to my version I changed these lines#####
-    @students.each{ |student| file.puts "#{student[:name]},#{student[:cohort]}"}
-  
+  @students.each{ |student| file.puts "#{student[:name]},#{student[:cohort]}"}
+   
   file.close
+  puts "File updated successfully!"
 end
 
 def load_students_from_file(filename = "students.csv") #made the method's name more descriptive
