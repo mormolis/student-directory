@@ -2,12 +2,12 @@
 def input_students
     puts "Please enter the names of the students"
     puts "To finish, just hit return twice"
-    name = gets.chomp
+    name = STDIN.gets.chomp
     while !name.empty? do
         @students << {name: name, cohort: :november}
         puts "Now we have #{@students.count} students"
         # get another name from the user
-        name = gets.chomp
+        name = STDIN.gets.chomp
     end
 end
   
@@ -43,6 +43,7 @@ def show_students
     end
 end
 def process(selection)
+    p selection
     case selection
     when "1"
         input_students
@@ -58,9 +59,9 @@ def process(selection)
         puts "I don't know what you meant, try again"
     end
 end
-def load_students
+def load_students(filename = "students.csv")
     begin
-        file = File.open("students.csv", "r")
+        file = File.open(filename, "r")
         
         file.readlines.each do |line|
             
@@ -74,10 +75,22 @@ def load_students
     end
 end
 
+def try_load_students
+    filename = ARGV.first
+    return if filename.nil?
+    if File.exists?(filename)
+        load_students(filename)
+        puts "#{@students.count} students loaded from #{filename}"
+    else
+        puts "Sorry... #{filename} does not exist."
+        exit
+    end
+end
+
 def interactive_menu
     loop do
         print_menu
-        selection = gets.chomp
+        selection = STDIN.gets.chomp
         process(selection)
     end
 end
@@ -88,7 +101,7 @@ def save_students
     file.close
 end
 
-
+try_load_students
 interactive_menu
   
 

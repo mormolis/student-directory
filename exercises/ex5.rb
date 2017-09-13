@@ -1,4 +1,3 @@
-
 def print_header
     puts "The students of Villains Academy"
     puts "--------------------------------"
@@ -48,3 +47,4 @@ students = input_students
 print_header
 print_students(students) 
 print_footer(students)
+
