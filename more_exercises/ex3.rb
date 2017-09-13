@@ -85,7 +85,7 @@ def save_students_to_file   # made it more descriptive
 #     file.puts csv_line
 ##### As I did to my version I changed these lines#####
     @students.each{ file.puts "#{student[:name]},#{student[:cohort]}"}
-  end
+  
   file.close
 end
 
