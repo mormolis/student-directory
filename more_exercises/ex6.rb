@@ -4,8 +4,8 @@ def print_menu
     puts "User's Menu\n-----------"
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to a file"
+  puts "4. Load the list from a file"
   puts "9. Exit" # 9 because we'll be adding more items
 end
 
@@ -27,9 +27,13 @@ def process(selection)
     puts "Bye!"
     exit # this will cause the program to terminate
   when "3"
-    save_students_to_file
+    print "Please enter a fileme to save the students: "
+    filename=gets.chomp
+    save_students_to_file(filename)
   when "4"
-    load_students_from_file
+    print "Please enter a filename to load students from: "
+    filename = gets.chomp
+    load_students_from_file(filename)
   else
     puts "\nI don't know what you meant, try again\n"
   end
@@ -83,24 +87,24 @@ def print_footer
   puts "\n\n"
 end
 
-def save_students_to_file   # made it more descriptive 
+def save_students_to_file(filename)   # made it more descriptive 
   # open the file for writing
-  file = File.open("students.csv", "w")
-  @students.each{ |student| file.puts "#{student[:name]},#{student[:cohort]}"}
-   
-  file.close
+   File.open(filename, "w") do |file|
+    @students.each{ |student| file.puts "#{student[:name]},#{student[:cohort]}"}
+   end
   puts "File updated successfully!"
 end
 
 def load_students_from_file(filename = "students.csv") #made the method's name more descriptive
-    file = File.open(filename, "r")
-    file.readlines.each do |line|
-        name, cohort = line.chomp.split(',')
-        parse_students_details(name, cohort)
+    File.open(filename, "r") do |file|
+        @students.clear #to avoid the duplicates
+        file.readlines.each do |line|
+            name, cohort = line.chomp.split(',')
+            parse_students_details(name, cohort)
+        end
     end
-    file.close
     puts "\n\nStudents' list was populated from #{filename} successfully!\n\n"
-  end
+end
 
 def try_load_students
   filename = ARGV.first# first argument from the command line
